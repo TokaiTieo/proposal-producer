@@ -10,6 +10,11 @@ import unittest
 ROOT = Path(__file__).resolve().parent
 
 
+def current_checksum():
+    import runpy
+    return runpy.run_path(str(ROOT / 'install.py'))['RELEASE']['archive_sha256']
+
+
 class Installation(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -55,7 +60,7 @@ class Installation(unittest.TestCase):
         for name in ['install.py']:
             shutil.copy2(ROOT / name, copy / name)
         file = copy / 'install.py'
-        file.write_text(file.read_text().replace('ffc55ef6463635a152dd576f76e725a40ffff6eadf59d441b0dc0dc270189664', '0000000000000000000000000000000000000000000000000000000000000000', 1))
+        file.write_text(file.read_text().replace(current_checksum(), '0' * 64, 1))
         self.run_install(root=copy, code=2)
         self.assertFalse(self.dest.exists())
 
