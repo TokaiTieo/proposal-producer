@@ -20,7 +20,7 @@ jobs:
           python test_install.py
           python install.py --dest "$RUNNER_TEMP/proposal-skills"
       - name: Install validation components
-        run: python -m pip install -r "$RUNNER_TEMP/proposal-skills/proposal-producer/requirements.txt"
+        run: python -m pip install -r "$RUNNER_TEMP/proposal-skills/proposal-producer/requirements-test.txt"
       - name: Validate contracts and run behavioral cases
         run: |
           python "$RUNNER_TEMP/proposal-skills/proposal-producer/scripts/proposal.py" validate --workdir "$RUNNER_TEMP/validation"
